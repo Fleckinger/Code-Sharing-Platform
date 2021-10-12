@@ -11,8 +11,6 @@ public class ApiController {
     public void getCode() {
         System.out.println("TestGetCode");
     }
-    //1 коммит
-    //2 коммит
 
 
 }
