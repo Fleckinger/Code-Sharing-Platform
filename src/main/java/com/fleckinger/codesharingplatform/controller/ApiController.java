@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ApiController {
 
     @GetMapping("/api/code")
+    public void getCode() {
+        System.out.println("TestGetCode");
+    }
 
 
 }
