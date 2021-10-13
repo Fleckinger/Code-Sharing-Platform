@@ -14,12 +14,6 @@ public class WebController {
      */
     @RequestMapping(value = "/code", method = RequestMethod.GET)
     public String getCode() {
-
-        /*return "<html> " +
-                "<head> " +
-                "<title>Code</title> " +
-                "</head> " +
-                "<body>";*/
         return "getCode page.html";
     }
 
