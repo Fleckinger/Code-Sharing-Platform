@@ -1,6 +1,7 @@
 package com.fleckinger.codesharingplatform.controller;
 
 import com.fleckinger.codesharingplatform.model.CodeEntity;
+import com.fleckinger.codesharingplatform.model.EmptyJsonResponse;
 import com.fleckinger.codesharingplatform.repository.CrudCodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
