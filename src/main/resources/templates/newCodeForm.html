@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body>
+<form method="POST" th:action="@{/code/new}" th:object="${code}">
+    <textarea id="code_snippet" name="code" rows="5" cols="33" > // write your code here </textarea>
+    <br><button id="send_snippet" type="submit" onclick="send()">Submit</button></br>
+</form>
+</body>
+</html>
