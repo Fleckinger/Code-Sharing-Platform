@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Latest</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}"/>
+</head>
+
+<body>
+<tr th:each="code:${codesList}">
+    <div>
+        <span id="load_date" th:text="${code.getUploadDate()}">code.getUploadDate</span>
+        <p id="code_snippet" th:text="${code.getCode()}">code.getCode</p>
+    </div>
+</tr>
+</body>
+</html>

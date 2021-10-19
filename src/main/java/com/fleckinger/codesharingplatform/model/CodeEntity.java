@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class CodeEntity {
     @Id
     @JsonIgnore
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String code;
     @JsonProperty("date")
@@ -33,6 +33,10 @@ public class CodeEntity {
     public CodeEntity(String code) {
         this.code = code;
         uploadDate = LocalDateTime.now();
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getCode() {
