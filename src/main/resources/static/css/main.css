@@ -1,9 +1,16 @@
+body {
+    background-color: #424242;
+}
+
 #load_date {
-    color: blue
+    color: white;
+    font: italic bold 12px/30px Georgia, serif;
 }
 #code_snippet {
-    background-color: aliceblue;
+    background-color: #121212;
+    color: white;
     border-style: solid;
+    border-radius: 15px;
     padding: 10px;
     margin-right: 50%;
 }

@@ -1,12 +1,10 @@
 package com.fleckinger.codesharingplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,8 +13,11 @@ public class CodeEntity {
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+    @Lob
+    @Column(length = 8192)
     private String code;
     @JsonProperty("date")
+    @JsonFormat(pattern = "yyyy/dd/MM HH:mm:ss")
     private LocalDateTime uploadDate;
 
 

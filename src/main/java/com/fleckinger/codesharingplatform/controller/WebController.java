@@ -15,9 +15,8 @@ import java.util.List;
 
 @Controller
 public class WebController {
-    private static final String DATE_FORMAT = "yyyy/dd/MM HH:mm:ss";
 
-    CrudCodeRepository repository;
+    private final CrudCodeRepository repository;
 
     @Autowired
     public WebController(CrudCodeRepository repository) {
@@ -46,7 +45,7 @@ public class WebController {
         //get  codeEntity from DB or create a default codeEntity
         CodeEntity codeEntity = repository.findById(id).orElse(new CodeEntity());
         String code = codeEntity.getCode();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/dd/MM HH:mm:ss");
         String time = codeEntity.getUploadDate().format(formatter);
         model.addAttribute("code", code);
         model.addAttribute("time", time);

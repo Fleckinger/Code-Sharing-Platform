@@ -16,9 +16,8 @@ import java.util.Map;
 
 @Controller
 public class ApiController {
-    private static final String DATE_FORMAT = "yyyy/dd/MM HH:mm:ss";
 
-    CrudCodeRepository repository;
+    private final CrudCodeRepository repository;
 
     @Autowired
     public ApiController(CrudCodeRepository repository) {
@@ -47,8 +46,7 @@ public class ApiController {
     public Map<String, String> getCode(HttpServletResponse response, @PathVariable long id) {
         //get codeEntity from DB or create a default codeEntity
         CodeEntity codeEntity = repository.findById(id).orElse(new CodeEntity());
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/dd/MM HH:mm:ss");
         String formattedDate = codeEntity.getUploadDate().format(formatter);
 
         Map<String, String> map = new HashMap<>();
@@ -60,9 +58,8 @@ public class ApiController {
     }
 
     /**
-     * @return last 10 codes, if  or return empty list
+     * @return last 10 or less codes, or return empty list
      */
-    //TODO поменять формат даты, возможно прям в HTML Expected: 2021/18/10 22:53:59 Found: 2021-10-18T22:53:59.331546
     @RequestMapping(value = "/api/code/latest", method = RequestMethod.GET)
     @ResponseBody
     public List<CodeEntity> getLatestCodes() {

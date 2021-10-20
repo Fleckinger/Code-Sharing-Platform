@@ -5,13 +5,19 @@
     <title>Latest</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet"
+          href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
 </head>
 
 <body>
+
 <tr th:each="code:${codesList}">
     <div>
-        <span id="load_date" th:text="${code.getUploadDate()}">code.getUploadDate</span>
-        <p id="code_snippet" th:text="${code.getCode()}">code.getCode</p>
+        <span id="load_date" th:text="${#temporals.format(code.getUploadDate(), 'yyyy/dd/MM HH:mm:ss')}">code.getUploadDate</span>
+        <pre><code id="code_snippet" th:text="${code.getCode()}">code.getCode</code></pre>
     </div>
 </tr>
 </body>
