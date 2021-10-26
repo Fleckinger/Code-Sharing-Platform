@@ -1,17 +1,15 @@
 package com.fleckinger.codesharingplatform.controller;
 
-import com.fleckinger.codesharingplatform.model.CodeEntity;
+import com.fleckinger.codesharingplatform.model.CodeSnippet;
 import com.fleckinger.codesharingplatform.repository.CrudCodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 
 @Controller
@@ -25,45 +23,56 @@ public class ApiController {
     }
 
     /**
-     * add new entity with passed code to db
-     *
-     * @return json with one field "code"
+     * add new codeSnippet to DB, set restrictions flags if access time or/and number of views more than 0
+     * @return Map with key - "id", value - id value. Return this map as response json
      */
     @RequestMapping(value = "/api/code/new", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> newCode(@RequestBody CodeEntity codeEntity) {
+    public Map<String, String> newCode(@RequestBody CodeSnippet codeSnippet) {
+
+        if (codeSnippet.getTime() > 0) {
+            codeSnippet.setTimeRestrictions(true);
+            codeSnippet.setAccessExpireDate(codeSnippet
+                    .getUploadDate()
+                    .plus(codeSnippet.getTime(), ChronoUnit.SECONDS));
+
+        }
+        if (codeSnippet.getViews() > 0) {
+            codeSnippet.setViewsRestrictions(true);
+        }
+        repository.save(codeSnippet);
+
         Map<String, String> response = new HashMap<>();
-        repository.save(codeEntity);
-        response.put("id", String.valueOf(codeEntity.getId()));
+        response.put("id", String.valueOf(codeSnippet.getId()));
+
         return response;
     }
 
     /**
-     * @return map with last CodeEntity from DB or default CodeEntity, with formatted date
+     * @param id UUID
+     * @return CodeSnippet from DB as response json
+     * @throws ResponseStatusException 404 NOT FOUND
      */
     @RequestMapping(value = "/api/code/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, String> getCode(HttpServletResponse response, @PathVariable long id) {
-        //get codeEntity from DB or create a default codeEntity
-        CodeEntity codeEntity = repository.findById(id).orElse(new CodeEntity());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/dd/MM HH:mm:ss");
-        String formattedDate = codeEntity.getUploadDate().format(formatter);
+    public CodeSnippet getCode(HttpServletResponse response, @PathVariable UUID id) {
 
-        Map<String, String> map = new HashMap<>();
+        CodeSnippet codeSnippet = repository.getCodeSnippetFromDB(id);
 
-        map.put("code", codeEntity.getCode());
-        map.put("date", formattedDate);
         response.addHeader("Content-Type", "text/html");
-        return map;
+
+        return codeSnippet;
     }
 
     /**
-     * @return last 10 or less codes, or return empty list
+     * @return last 10 or less codeSnippets that has no restrictions, or return empty list
      */
     @RequestMapping(value = "/api/code/latest", method = RequestMethod.GET)
     @ResponseBody
-    public List<CodeEntity> getLatestCodes() {
-
-        return repository.findFirst10ByOrderByUploadDateDesc().orElse(new ArrayList<>());
+    public List<CodeSnippet> getLatestCodes() {
+        return repository
+                .findFirst10ByTimeRestrictionsFalseAndViewsRestrictionsFalseOrderByUploadDateDesc()
+                .orElse(new ArrayList<>());
     }
+
 }

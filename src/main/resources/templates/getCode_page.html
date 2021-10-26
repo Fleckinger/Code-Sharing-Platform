@@ -12,9 +12,24 @@
 </head>
 
 <body>
-<span id="load_date" th:text="${time}">value</span>
-<pre id="code_snippet">
-       <span><code th:text="${code}">value</code></span>
+    <span id="load_date" th:text="${time}">
+        22/22/22
+    </span>
+
+    <p id="views_restriction" th:if="${hasViewRestriction}">
+         <u th:text="${viewRestriction}"> 123 </u> more views allowed
+    </p>
+
+
+    <span id="time_restriction" th:if="${hasTimeRestriction}">
+       <br>
+        The code will be available for <u th:text="${timeRestriction}"> 123 </u> seconds
+    </span>
+
+    <pre >
+       <code id="code_snippet" th:text="${code}">
+
+       </code>
     </pre>
 
 </body>
